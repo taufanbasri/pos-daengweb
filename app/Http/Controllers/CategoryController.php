@@ -75,8 +75,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->back()->with(['success' => 'Kategori ' .$category->name. ' berhasil dihapus!']);
     }
 }
