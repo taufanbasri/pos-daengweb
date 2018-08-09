@@ -52,9 +52,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -64,9 +64,24 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'nullable|string'
+        ]);
+
+        try {
+            $category->update([
+                'name' => $request->name,
+                'description' => $request->description
+            ]);
+
+            return redirect(route('categories.index'))->with(['success' => 'Kategori ' .$category->name. ' telah di update']);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => $e->getMessage()]);
+        }
+
     }
 
     /**
