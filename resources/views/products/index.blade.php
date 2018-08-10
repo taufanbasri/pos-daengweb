@@ -53,15 +53,42 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
+                    @forelse ($products as $product)
+                      <tr>
+                        <td>
+                          @if (!empty($product->photo))
+                            <img src="{{ asset('uploads/product/'. $product->photo) }}" alt="{{ $product->photo }}" width="50px" height="50px">
+                          @else
+                            <img src="http://via.placeholder.com/50x50" alt="{{ $row->name }}">
+                          @endif
+                        </td>
+                        <td>
+                          <sup class="label label-success">({{ $product->code }})</sup>
+                          <strong>{{ ucfirst($product->name) }}</strong>
+                        </td>
+                        <td>{{ $product->stock }}</td>
+                        <td>Rp {{ number_format($product->price) }}</td>
+                        <td>{{ $product->category->name }}</td>
+                        <td>{{ $product->updated_at }}</td>
+                        <td>
+                          <form action="{{ route('products.destroy', $product->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+
+                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">
+                              <i class="fa fa-edit"></i>
+                            </a>
+                            <button class="btn btn-sm btn-danger">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    @empty
+                      <tr>
+                        <td colspan="7" class="text-center">Tidak ada data.</td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>
