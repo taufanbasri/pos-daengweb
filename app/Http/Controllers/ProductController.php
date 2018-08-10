@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use File;
+use Image;
+use App\Product;
+use App\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -23,7 +27,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::orderBy('name', 'asc')->get();
+
+        return view('products.create', compact('categories'));
     }
 
     /**
@@ -34,7 +40,46 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'code' => 'required|string|max:10|unique:products',
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string|max:100',
+            'stock' => 'required|integer',
+            'price' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'photo' => 'nullable|image|mimes:jpg,png,jpeg'
+        ]);
+
+        try {
+            $photo = null;
+
+            if ($request->hasFile('photo')) {
+                $photo = $this->saveFile($request->name, $request->file('photo'));
+            }
+
+            $product = Product::create($request->all());
+            $product->photo = $photo;
+            $product->save();
+
+            return redirect(route('products.index'))->with(['success' => '<strong>' . $product->name . '</strong> Ditambahkan']);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => $e->getMessage()]);
+        }
+    }
+
+    private function saveFile($name, $photo)
+    {
+        $image_name = str_slug($name) . time() . '.' .$photo->getClientOriginalExtension();
+
+        $path = public_path('uploads/product');
+
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0777, true, true);
+        }
+
+        Image::make($photo)->save($path. '/' . $image_name);
+
+        return $image_name;
     }
 
     /**

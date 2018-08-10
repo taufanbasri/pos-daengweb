@@ -33,9 +33,9 @@
                 </a>
               @endslot
 
-              @if (session('error'))
-                @alert(['type' => 'danger'])
-                  {!! session('error') !!}
+              @if (session('success'))
+                @alert(['type' => 'success'])
+                  {!! session('success') !!}
                 @endalert
               @endif
 
