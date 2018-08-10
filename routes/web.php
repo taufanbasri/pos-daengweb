@@ -20,4 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('categories', 'CategoryController')->except('create', 'show');
-Route::resource('products', 'ProductController');
+Route::resource('products', 'ProductController')->except('show');

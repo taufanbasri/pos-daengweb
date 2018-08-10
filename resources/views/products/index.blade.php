@@ -59,7 +59,7 @@
                           @if (!empty($product->photo))
                             <img src="{{ asset('uploads/product/'. $product->photo) }}" alt="{{ $product->photo }}" width="50px" height="50px">
                           @else
-                            <img src="http://via.placeholder.com/50x50" alt="{{ $row->name }}">
+                            <img src="http://via.placeholder.com/50x50" alt="{{ $product->name }}">
                           @endif
                         </td>
                         <td>
