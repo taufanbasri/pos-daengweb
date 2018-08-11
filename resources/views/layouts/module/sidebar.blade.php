@@ -64,6 +64,12 @@
                 <p>Role</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('users.index') }}" class="nav-link">
+                <i class="fa fa-circle-o nav-icon"></i>
+                <p>User</p>
+              </a>
+            </li>
           </ul>
         </li>
         <li class="nav-item has-treeview">

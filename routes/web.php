@@ -23,4 +23,6 @@ Route::group(['middleware' => 'auth'], function()
     Route::resource('categories', 'CategoryController')->except('create', 'show');
     Route::resource('products', 'ProductController')->except('show');
     Route::resource('roles', 'RoleController')->only('index', 'store', 'destroy');
+    Route::resource('users', 'UserController')->except('show');
+    Route::get('users/{user}/roles', 'UserController@role')->name('users.roles');
 });
