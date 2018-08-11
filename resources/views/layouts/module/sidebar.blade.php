@@ -50,6 +50,23 @@
           </ul>
         </li>
         <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-user"></i>
+            <p>
+              Manajemen User
+              <i class="right fa fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('roles.index') }}" class="nav-link">
+                <i class="fa fa-circle-o nav-icon"></i>
+                <p>Role</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item has-treeview">
           <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="nav-icon fa fa-sign-out"></i>
             <p>{{ __('Logout') }}</p>

@@ -22,4 +22,5 @@ Route::group(['middleware' => 'auth'], function()
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('categories', 'CategoryController')->except('create', 'show');
     Route::resource('products', 'ProductController')->except('show');
+    Route::resource('roles', 'RoleController')->only('index', 'store', 'destroy');
 });
