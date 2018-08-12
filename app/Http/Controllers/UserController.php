@@ -61,17 +61,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -118,5 +107,23 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->back()->with(['success' => 'User: <strong>' . $user->name . '</strong> Dihapus']);
+    }
+
+    public function role(User $user)
+    {
+        $roles = Role::all()->pluck('name');
+
+        return view('users.roles', compact('user', 'roles'));
+    }
+
+    public function setRole(Request $request, User $user)
+    {
+        $request->validate([
+            'role' => 'required'
+        ]);
+
+        $user->syncRoles($request->role);
+
+        return redirect()->back()->with(['success' => 'Role sudah di set']);
     }
 }

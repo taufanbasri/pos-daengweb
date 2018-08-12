@@ -25,4 +25,5 @@ Route::group(['middleware' => 'auth'], function()
     Route::resource('roles', 'RoleController')->only('index', 'store', 'destroy');
     Route::resource('users', 'UserController')->except('show');
     Route::get('users/{user}/roles', 'UserController@role')->name('users.roles');
+    Route::put('users/{user}/roles', 'UserController@setRole')->name('users.set-role');
 });
