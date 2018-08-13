@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -125,5 +127,47 @@ class UserController extends Controller
         $user->syncRoles($request->role);
 
         return redirect()->back()->with(['success' => 'Role sudah di set']);
+    }
+
+    public function rolePermission(Request $request)
+    {
+        $role = $request->role;
+
+        $permissions = null;
+        $hasPermissions = null;
+
+        $roles = Role::all()->pluck('name');
+
+        if (!empty($role)) {
+            $getRole = Role::findByName($role);
+
+            $hasPermissions = $getRole->permissions->pluck('name')->all();
+
+            $permissions = Permission::all()->pluck('name');
+        }
+
+        return view('users.role-permission', compact('roles', 'permissions', 'hasPermissions'));
+    }
+
+    public function addPermission(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|unique:permissions'
+        ]);
+
+        $permission = Permission::firstOrCreate([
+            'name' => $request->name
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function setRolePermission(Request $request, $role)
+    {
+        $role = Role::findByName($role);
+
+        $role->syncPermissions($request->permission);
+
+        return redirect()->back()->with(['success' => 'Permission to Role Saved!']);
     }
 }
